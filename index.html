@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Интерактивный проект об энергетике: виды энергии, видео, конспекты и профессии отрасли.">
 <title>РУСГИДРО — Энергия, которая движет будущее</title>
+<link rel="icon" href="logo.png">
 <style>
 /* ============ ПЕРЕМЕННЫЕ / ТЕМЫ ============ */
 :root{
@@ -47,11 +48,11 @@ header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify
 header.scrolled{box-shadow:0 10px 34px rgba(0,59,99,.10)}
 
 .brand{display:flex;align-items:center;gap:11px}
-.brand-mark{width:42px;height:42px;border-radius:13px;flex:0 0 auto;
-  background:linear-gradient(140deg,var(--blue),var(--cyan));
-  display:grid;place-items:center;box-shadow:0 8px 22px rgba(0,102,166,.38);
+.brand-mark{width:46px;height:46px;flex:0 0 auto;display:grid;place-items:center;
   transition:transform .4s cubic-bezier(.2,.8,.3,1)}
-.brand:hover .brand-mark{transform:rotate(-8deg) scale(1.06)}
+.brand:hover .brand-mark{transform:scale(1.06) rotate(-4deg)}
+.brand-logo{width:100%;height:100%;object-fit:contain;display:block}
+html[data-theme="dark"] .brand-logo{filter:brightness(0) invert(1)}
 .brand-name{display:block;font-weight:900;font-size:19px;letter-spacing:.6px;color:var(--blue);line-height:1.15}
 html[data-theme="dark"] .brand-name{color:#7fd4f5}
 .brand-sub{display:block;font-size:10.5px;color:var(--muted);letter-spacing:.2px}
@@ -359,6 +360,7 @@ html[data-theme="dark"] .foot .fbrand{color:#7fd4f5}
   section{padding-left:16px;padding-right:16px}
   header{padding-left:14px;padding-right:14px}
   .brand-sub{display:none}
+  .brand-mark{width:40px;height:40px}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
@@ -375,10 +377,7 @@ html[data-theme="dark"] .foot .fbrand{color:#7fd4f5}
 <header id="header">
   <a class="brand" href="#home">
     <span class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 2.5c3.6 4.2 6.5 7.7 6.5 11.2A6.5 6.5 0 0 1 5.5 13.7C5.5 10.2 8.4 6.7 12 2.5Z" fill="#fff" opacity=".95"/>
-        <path d="M9.2 13.6c0 1.9 1.3 3.3 3 3.6" stroke="#0066A6" stroke-width="1.4" stroke-linecap="round"/>
-      </svg>
+      <img src="logo.png" alt="РУСГИДРО" class="brand-logo">
     </span>
     <span>
       <span class="brand-name">РУСГИДРО</span>
@@ -817,7 +816,7 @@ html[data-theme="dark"] .foot .fbrand{color:#7fd4f5}
     window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
   });
 
-  /* ---------- ПЛАВНАЯ ПРОКРУТКА (fallback) ---------- */
+  /* ---------- ПЛАВНАЯ ПРОКРУТКА ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
       var id = a.getAttribute('href');

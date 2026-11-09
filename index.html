@@ -541,13 +541,14 @@ html[data-theme="dark"] .foot .fbrand{color:#7fd4f5}
     </div>
 
     <!-- ---------- ПАНЕЛЬ 1 ---------- -->
-    <!-- Чтобы добавить видео: укажите ссылку в атрибуте src тега <video> ниже.
-         Плашка-постер скроется автоматически при старте воспроизведения. -->
     <div class="video-panel active" id="panel1">
       <div class="video-layout">
 
         <div class="video-frame reveal">
-          <video id="player1" controls playsinline preload="none"></video>
+          <video id="player1" controls playsinline preload="metadata">
+            <source src="video1.mp4" type="video/mp4">
+            Ваш браузер не поддерживает воспроизведение видео.
+          </video>
           <div class="video-poster" data-player="player1">
             <div class="vp-emoji">💧</div>
             <div class="vp-title">Видео № 01</div>
@@ -616,7 +617,10 @@ html[data-theme="dark"] .foot .fbrand{color:#7fd4f5}
       <div class="video-layout">
 
         <div class="video-frame reveal">
-          <video id="player2" controls playsinline preload="none"></video>
+          <video id="player2" controls playsinline preload="metadata">
+            <source src="video2.mp4" type="video/mp4">
+            Ваш браузер не поддерживает воспроизведение видео.
+          </video>
           <div class="video-poster" data-player="player2">
             <div class="vp-emoji">👷</div>
             <div class="vp-title">Видео № 02</div>
@@ -909,23 +913,36 @@ html[data-theme="dark"] .foot .fbrand{color:#7fd4f5}
     });
   });
 
-  /* ---------- ВИДЕО: СКРЫТИЕ ПОСТЕРА ---------- */
+  /* ---------- ВИДЕО: ЗАПУСК ПО КНОПКЕ ▶ ---------- */
   document.querySelectorAll('.video-poster').forEach(function(poster){
     var player = document.getElementById(poster.dataset.player);
     var btn = poster.querySelector('.play-btn');
     var hint = poster.querySelector('.vp-hint');
 
     btn.addEventListener('click', function(){
-      if(player && player.currentSrc){
-        poster.classList.add('hidden');
-        player.play();
-      } else if(hint){
-        hint.textContent = 'Добавьте ссылку на видео в атрибут src тега <video>';
+      if(!player) return;
+      var source = player.querySelector('source');
+      if(!source || !source.getAttribute('src')){
+        if(hint) hint.textContent = 'Добавьте ссылку на видео в src тега <source>';
+        return;
+      }
+      poster.classList.add('hidden');
+      var p = player.play();
+      if(p && p.catch){
+        p.catch(function(){
+          poster.classList.remove('hidden');
+          if(hint) hint.textContent = 'Не удалось запустить видео — проверьте имя файла';
+        });
       }
     });
 
     if(player){
       player.addEventListener('play', function(){ poster.classList.add('hidden'); });
+      player.addEventListener('error', function(){
+        poster.classList.remove('hidden');
+        var src = player.querySelector('source');
+        if(hint) hint.textContent = 'Ошибка загрузки: ' + (src ? src.getAttribute('src') : '');
+      });
     }
   });
 
